@@ -14,14 +14,14 @@
             <div class="bg-gray-300 w-10 h-10 rounded-full"></div>
             <!-- /User Avatar -->
 
-            <div class="text-gray-700 font-normal w-full">
-                <textarea
-                    class="block w-full p-2 pt-2 text-gray-900 rounded-lg border-none outline-none focus:ring-0 focus:ring-offset-0"
-                    name="post_content"
-                    rows="2"
-                    placeholder="What's going on, Shamim?"
-                ></textarea>
-            </div>
+          <div class="text-gray-700 font-normal w-full">
+    <textarea
+        class="block w-full p-2 pt-2 text-gray-900 rounded-lg border-none outline-none focus:ring-0 focus:ring-offset-0"
+        name="post_content"
+        rows="2"
+        placeholder="What's going on?"
+    ></textarea>
+</div>
         </div>
     </div>
 
@@ -68,27 +68,32 @@
                     <!-- User Info -->
                     <div class="text-gray-900 flex flex-col min-w-0 flex-1">
                       <a
-                        href="profile.html"
+                      @if(auth()->user() && auth()->user()->id === $post->user_id)
+                        href="{{ route('profile')}}"
+                        @endif
                         class="hover:underline font-semibold line-clamp-1"
                       >
-                        Al Nahian
+                      {{ $post->user->fname }}
                       </a>
 
                       <a
-                        href="profile.html"
+                      @if(auth()->user() && auth()->user()->id === $post->user_id)
+                      href="{{ route('profile')}}"
+                        @endif
+
                         class="hover:underline text-sm text-gray-500 line-clamp-1"
                       >
-                        @alnahian2003
+                      {{ '@' . $post->user->username }}
                       </a>
                     </div>
                     <!-- /User Info -->
                   </div>
-
+                  @if(auth()->user() && auth()->user()->id === $post->user_id)
                   <!-- Card Action Dropdown -->
                   <div
                     class="flex flex-shrink-0 self-center"
-                    x-data="{ open: false }"
-                  >
+                    x-data="{ open: false }"        >
+
                     <div class="relative inline-block text-left">
                       <div>
                         <button
@@ -120,26 +125,41 @@
                         aria-labelledby="user-menu-button"
                         tabindex="-1"
                       >
+                      @if(auth()->user() && auth()->user()->id === $post->user_id)
                         <a
-                          href="#"
+                          href="{{ route('posts.edit', $post) }}"
                           class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                           role="menuitem"
                           tabindex="-1"
                           id="user-menu-item-0"
                           >Edit</a
                         >
-                        <a
-                          href="#"
-                          class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                          role="menuitem"
-                          tabindex="-1"
-                          id="user-menu-item-1"
-                          >Delete</a
-                        >
+                        @endif
+                        @if(auth()->user() && auth()->user()->id === $post->user_id)
+
+                        <form method="POST" action="{{ route('posts.delete', $post) }}">
+                            @csrf
+                            @method('DELETE')
+                        <button
+                        type="submit"
+                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        role="menuitem"
+                        tabindex="-1"
+                        id="user-menu-item-1"
+                        onclick="showDeleteConfirmation('{{ route('posts.delete', $post) }}')"
+                     >
+                         Delete
+                     </button>
+                    </form>
+                    @endif
+
+
                       </div>
                     </div>
+
                   </div>
                   <!-- /Card Action Dropdown -->
+                  @endif
                 </div>
               </header>
 
@@ -170,3 +190,15 @@
 
 
 @endsection
+
+<script>
+    function showDeleteConfirmation(deleteUrl) {
+        // Show a confirmation dialog
+        if (confirm('Are you sure you want to delete this post?')) {
+            // If the user clicks "OK", redirect to the delete URL
+            window.location.href = deleteUrl;
+        }
+        // If the user clicks "Cancel", do nothing
+    }
+</script>
+
