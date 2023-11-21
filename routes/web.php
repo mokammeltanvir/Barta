@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\LoginUserController;
 use App\Http\Controllers\Auth\RegisterUserController;
@@ -20,12 +22,6 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
-// Route::get('/login', function () {
-//     return view('auth.login');
-// });
-// Route::get('/register', function () {
-//     return view('auth.register');
-// });
 Route::get('/register', [RegisterUserController::class, 'create'])->name('register');
 Route::post('/register', [RegisterUserController::class, 'store']);
 
@@ -38,12 +34,18 @@ Route::post('/logout', [LoginUserController::class, 'logout'])->name('logout');
 
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/home', function () {
-        return view('pages.home');
-    });
+    // Home Route
+    // Route::get('/home', [HomeController::class, 'index'])->name('home');
+
+    // Profile Route
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
     Route::get('/profile/{id}/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile{id}', [ProfileController::class, 'update'])->name('profile.update');
+
+    // Post Route
+    Route::get('/home', [PostController::class, 'index'])->name('home');
+Route::post('/posts/store', [PostController::class, 'store'])->name('posts.store');
+
 
 });
 
