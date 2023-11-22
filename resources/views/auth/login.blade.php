@@ -13,7 +13,7 @@
   <body class="h-full">
 <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
     <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-        <a href="./index.html" class="text-center text-6xl font-bold text-gray-900">
+        <a href="/" class="text-center text-6xl font-bold text-gray-900">
             <h1>Barta</h1>
         </a>
 
@@ -44,9 +44,11 @@
                     <label for="password" class="block text-sm font-medium leading-6 text-gray-900">
                         Password
                     </label>
+                    @if (Route::has('password.request'))
                     <div class="text-sm">
-                        <a href="#" class="font-semibold text-black hover:text-black">Forgot password?</a>
+                        <a href="{{ route('password.request') }}" class="font-semibold text-black hover:text-black">Forgot password?</a>
                     </div>
+                    @endif
                 </div>
                 <div class="mt-2">
                     <input id="password" name="password" type="password" autocomplete="current-password" placeholder="••••••••" required

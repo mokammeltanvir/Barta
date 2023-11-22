@@ -2,80 +2,59 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Http\Requests\ProfileUpdateRequest;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display the user's profile form.
      */
-    public function index()
+    public function edit(Request $request): View
     {
-        $user = Auth::user();
-        return view('pages.profile.index', compact('user'));
+        return view('profile.edit', [
+            'user' => $request->user(),
+        ]);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Update the user's profile information.
      */
-    public function create()
+    public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        //
+        $request->user()->fill($request->validated());
+
+        if ($request->user()->isDirty('email')) {
+            $request->user()->email_verified_at = null;
+        }
+
+        $request->user()->save();
+
+        return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Delete the user's account.
      */
-    public function store(Request $request)
+    public function destroy(Request $request): RedirectResponse
     {
-        //
-    }
+        $request->validateWithBag('userDeletion', [
+            'password' => ['required', 'current_password'],
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+        $user = $request->user();
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        // dd($id);
-        $user = User::findOrFail($id);
+        Auth::logout();
 
-        return view('pages.profile.edit', compact('user'));
-    }
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-    // dd($request->all());
-    // Update the user's profile information
+        $user->delete();
 
-    User::where('id', $id)->update([
-        'fname' => $request->fname,
-        'lname' => $request->lname,
-        'email' => $request->email,
-        'password' => Hash::make($request->new_password),
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
-    ]);
-    return redirect()->route('profile')->with('success', 'Profile updated successfully');
-
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return Redirect::to('/');
     }
 }
