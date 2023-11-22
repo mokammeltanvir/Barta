@@ -69,7 +69,7 @@
                     <div class="text-gray-900 flex flex-col min-w-0 flex-1">
                       <a
                       @if(auth()->user() && auth()->user()->id === $post->user_id)
-                        href="{{ route('profile')}}"
+                        href="{{ route('profile.edit')}}"
                         @endif
                         class="hover:underline font-semibold line-clamp-1"
                       >
@@ -78,7 +78,7 @@
 
                       <a
                       @if(auth()->user() && auth()->user()->id === $post->user_id)
-                      href="{{ route('profile')}}"
+                      href="{{ route('profile.edit')}}"
                         @endif
 
                         class="hover:underline text-sm text-gray-500 line-clamp-1"

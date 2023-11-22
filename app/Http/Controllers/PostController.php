@@ -12,7 +12,7 @@ class PostController extends Controller
         // $posts = Post::all();
         $posts = Post::with('user')->get();
 
-        return view('pages.home', compact('posts'));
+        return view('home', compact('posts'));
     }
 
     public function store(Request $request)
