@@ -1,9 +1,40 @@
 @extends('layouts.app')
-@section('title', 'Post')
+@section('title', 'Home')
 @section('content')
+
+<!-- Create Post -->
+<form method="POST" action="{{ route('posts.store') }}" class="bg-white border-2 border-black rounded-lg shadow mx-auto max-w-none px-4 py-5 sm:px-6 space-y-3">
+    @csrf
+    <!-- Create Post Card Top -->
+    <div>
+        <div class="flex items-start space-x-3">
+            <div class="bg-gray-300 w-10 h-10 rounded-full"></div>
+            <div class="text-gray-700 font-normal w-full">
+                <textarea class="block w-full p-2 pt-2 text-gray-900 rounded-lg border-none outline-none focus:ring-0 focus:ring-offset-0" name="post_content" rows="2" placeholder="What's going on?"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Post Card Bottom -->
+    <div>
+        <div class="flex items-center justify-end">
+            <div>
+                <!-- Post Button -->
+                <button type="submit" class="-m-2 flex gap-2 text-xs items-center rounded-full px-4 py-2 font-semibold bg-gray-800 hover:bg-black text-white">
+                    Post
+                </button>
+                <!-- /Post Button -->
+            </div>
+        </div>
+    </div>
+    <!-- /Create Post Card Bottom -->
+</form>
+<!-- /Create Post -->
 
 <!-- Posts -->
 <section id="newsfeed" class="space-y-6">
+    @foreach ($posts as $post)
+
         <!-- Post Card -->
         <article class="bg-white border-2 border-black rounded-lg shadow mx-auto max-w-none px-4 py-5 sm:px-6">
             <!-- Post Card Top -->
@@ -54,7 +85,7 @@
             </header>
 
             <!-- Content -->
-
+            <a href="{{ route('posts.show', $post) }}">
             <div class="py-4 text-gray-700 font-normal">
                 <p>{{ $post->post_content }}</p>
             </div>
@@ -67,7 +98,7 @@
                 <span>•</span>
                 <span>450 views</span>
             </div>
-
+            </a>
 
             <hr class="my-6" />
 
@@ -121,64 +152,21 @@
 </article>
 <!-- /Barta Card -->
 
+
+        </article>
+        <!-- /Post Card -->
+    @endforeach
 </section>
 
-   <hr />
-
-   <div class="flex flex-col space-y-6">
-     <h1 class="text-lg font-semibold">Comments ({{ $post->comments->count() }})</h1>
-     <hr>
-      <!-- Barta User Comments Container -->
-      <article
-      class="bg-white border-2 border-black rounded-lg shadow mx-auto max-w-none px-4 py-2 sm:px-6 min-w-full divide-y">
-      <!-- Comments -->
-      @foreach ($comments as $comment)
-      <div class="py-4">
-        <!-- Barta User Comments Top -->
-        <header>
-          <div class="flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-              <!-- User Info -->
-              <div class="text-gray-900 flex flex-col min-w-0 flex-1">
-                <a
-                href="{{ route('profile.show', $comment->user) }}"
-                  class="hover:underline font-semibold line-clamp-1">
-                  {{ $comment->user->fname }}
-                </a>
-
-                <a
-                href="{{ route('profile.show', $comment->user) }}"
-                  class="hover:underline text-sm text-gray-500 line-clamp-1">
-                  {{ '@' . $comment->user->username }}
-                </a>
-              </div>
-              <!-- /User Info -->
-            </div>
-          </div>
-        </header>
-
-        <!-- Content -->
-        <div class="py-4 text-gray-700 font-normal">
-          <p>{{ $comment->content }}</p>
-        </div>
-
-        <!-- Date Created -->
-        <div class="flex items-center gap-2 text-gray-500 text-xs">
-          <span class="">{{ $comment->created_at->diffForHumans() }}</span>
-        </div>
-      </div>
-      @endforeach
-      <!-- /Comments -->
-    </article>
-    <!-- /Barta User Comments -->
-
-
-
-   </div>
-
-
-
- </section>
- <!-- /Newsfeed -->
+<script>
+    function showDeleteConfirmation(deleteUrl) {
+        // Show a confirmation dialog
+        if (confirm('Are you sure you want to delete this post?')) {
+            // If the user clicks "OK", redirect to the delete URL
+            window.location.href = deleteUrl;
+        }
+        // If the user clicks "Cancel", do nothing
+    }
+</script>
 
 @endsection
