@@ -12,10 +12,10 @@
                     <div class="flex items-center space-x-3">
                         <!-- User Info -->
                         <div class="text-gray-900 flex flex-col min-w-0 flex-1">
-                            <a href="{{ route('profile.show', $post->user) }}" class="hover:underline font-semibold line-clamp-1">
+                            <a href="{{ route('user.show', $post->user) }}" class="hover:underline font-semibold line-clamp-1">
                                 {{ $post->user->fname }}
                             </a>
-                            <a href="{{ route('profile.show', $post->user) }}" class="hover:underline text-sm text-gray-500 line-clamp-1">
+                            <a href="{{ route('user.show', $post->user) }}" class="hover:underline text-sm text-gray-500 line-clamp-1">
                                 {{ '@' . $post->user->username }}
                             </a>
                         </div>
@@ -123,11 +123,10 @@
 
 </section>
 
-   <hr />
+    @if ($post->comments->count()!=0)
 
    <div class="flex flex-col space-y-6">
      <h1 class="text-lg font-semibold">Comments ({{ $post->comments->count() }})</h1>
-     <hr>
       <!-- Barta User Comments Container -->
       <article
       class="bg-white border-2 border-black rounded-lg shadow mx-auto max-w-none px-4 py-2 sm:px-6 min-w-full divide-y">
@@ -141,13 +140,13 @@
               <!-- User Info -->
               <div class="text-gray-900 flex flex-col min-w-0 flex-1">
                 <a
-                href="{{ route('profile.show', $comment->user) }}"
+                href="{{ route('user.show', $comment->user) }}"
                   class="hover:underline font-semibold line-clamp-1">
                   {{ $comment->user->fname }}
                 </a>
 
                 <a
-                href="{{ route('profile.show', $comment->user) }}"
+                href="{{ route('user.show', $comment->user) }}"
                   class="hover:underline text-sm text-gray-500 line-clamp-1">
                   {{ '@' . $comment->user->username }}
                 </a>
@@ -175,6 +174,8 @@
 
 
    </div>
+   @endif
+
 
 
 

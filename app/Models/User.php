@@ -23,6 +23,7 @@ class User extends Authenticatable
         'lname',
         'username',
         'email',
+        'bio',
         'password',
 
 

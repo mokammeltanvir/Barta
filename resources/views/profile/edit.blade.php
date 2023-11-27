@@ -2,11 +2,10 @@
 @section('title', 'Edit Profile')
 @section('content')
       <!-- Profile Edit Form -->
-      <!-- Profile Edit Form -->
 
-      <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
+      <form method="post" action="{{ route('user.update', ['user' => $user]) }}" class="mt-6 space-y-6">
         @csrf
-        @method('patch')
+        @method('put')
         <div class="space-y-12">
           <div class="border-b border-gray-900/10 pb-12">
             <h2 class="text-xl font-semibold leading-7 text-gray-900">
@@ -97,12 +96,8 @@
                   >Bio</label
                 >
                 <div class="mt-2">
-                  <textarea
-                    id="bio"
-                    name="bio"
-                    rows="3"
-                    class="block w-full rounded-md border-0 p-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6">{{$user->bio}}</textarea
-                  >
+                    <textarea id="bio" name="bio" rows="3" class="block w-full rounded-md border-0 p-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6">{{ $user->bio ?? '' }}</textarea>
+
                 </div>
                 <p class="mt-3 text-sm leading-6 text-gray-600">
                   Write a few sentences about yourself.
@@ -113,17 +108,14 @@
         </div>
 
         <div class="mt-6 flex items-center justify-end gap-x-6">
-          <button
-            type="button"
-            class="text-sm font-semibold leading-6 text-gray-900">
-            Cancel
-          </button>
-          <button
-            type="submit"
-            class="rounded-md bg-gray-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">
-            Save
-          </button>
+            <a href="{{ route('user.show', ['user' => $user->id]) }}" class="text-sm font-semibold leading-6 text-gray-900 hover:underline">Cancel</a>
+            <button
+                type="submit"
+                class="rounded-md bg-gray-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">
+                Update
+            </button>
         </div>
+
       </form>
       <!-- /Profile Edit Form -->
  @endsection

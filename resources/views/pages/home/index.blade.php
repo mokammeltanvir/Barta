@@ -43,10 +43,10 @@
                     <div class="flex items-center space-x-3">
                         <!-- User Info -->
                         <div class="text-gray-900 flex flex-col min-w-0 flex-1">
-                            <a href="{{ route('profile.show', $post->user) }}" class="hover:underline font-semibold line-clamp-1">
+                            <a href="{{ route('user.show', $post->user) }}" class="hover:underline font-semibold line-clamp-1">
                                 {{ $post->user->fname }}
                             </a>
-                            <a href="{{ route('profile.show', $post->user) }}" class="hover:underline text-sm text-gray-500 line-clamp-1">
+                            <a href="{{ route('user.show', $post->user) }}" class="hover:underline text-sm text-gray-500 line-clamp-1">
                                 {{ '@' . $post->user->username }}
                             </a>
                         </div>
