@@ -8,12 +8,20 @@
     <!-- Profile Info -->
     <div
       class="flex gap-4 justify-center flex-col text-center items-center">
-      <!-- User Meta -->
+       <!-- Avatar -->
+       <div class="relative">
+        <img
+          class="w-32 h-32 rounded-full border-2 border-gray-800"
+          src="{{ asset('uploads/avatar/' . $user->user_image) }}"
+          alt="User Avatar" />
+<!--            <span class="bottom-2 right-4 absolute w-3.5 h-3.5 bg-green-400 border-2 border-white dark:border-gray-800 rounded-full"></span>-->
+      </div>
+      <!-- /Avatar -->
       <div>
-        <h1 class="font-bold md:text-2xl">{{ auth()->user()->fname }} {{ auth()->user()->lname }}</h1>
+        <h1 class="font-bold md:text-2xl">{{ $user->fname }} {{ $user->lname }}</h1>
         <!-- User Bio -->
         <div class="text-center">
-            <p class="text-gray-700">{{ auth()->user()->bio }}</p>
+            <p class="text-gray-700">{{ $user->bio }}</p>
         </div>
         <!-- /User Bio -->
       </div>
@@ -80,7 +88,7 @@
             class="block w-full p-2 text-gray-900 rounded-lg border-none outline-none focus:ring-0 focus:ring-offset-0"
             name="barta"
             rows="2"
-            placeholder="What's going on, Shamim?"></textarea>
+            placeholder="What's going on?"></textarea>
         </div>
       </div>
     </div>
@@ -162,6 +170,10 @@
             <!-- Content -->
             <a href="{{ route('posts.show', $post) }}">
                 <div class="py-4 text-gray-700 font-normal">
+                    <img
+                      src="{{ asset('uploads/posts/' . $post->post_image) }}"
+                      class="min-h-auto w-full rounded-lg object-cover max-h-64 md:max-h-72"
+                      alt="" />
                     <p>
                         {{ $post->post_content }}
                     </p>
