@@ -103,4 +103,29 @@ class UserController extends Controller
 
         return Redirect::to('/');
     }
+
+    /**
+     * Display the user's profile form.
+     */
+    public function search(Request $request, $id)
+{
+    $user = User::findOrFail($id);
+
+    // Check if a search query is provided
+    $search = $request->query('search');
+
+    // If search query exists, filter users based on name, last name, or email
+    if ($search) {
+        $users = User::where('fname', 'like', '%' . $search . '%')
+            ->orWhere('lname', 'like', '%' . $search . '%')
+            ->orWhere('email', 'like', '%' . $search . '%')
+            ->get();
+    } else {
+        $users = collect(); // an empty collection if no search term is provided
+    }
+
+    return view('search.profile', compact('user', 'users', 'search'));
+}
+
+
 }

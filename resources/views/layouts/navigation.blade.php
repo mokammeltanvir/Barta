@@ -1,12 +1,31 @@
 <!-- Navigation -->
 <nav x-data="{ mobileMenuOpen: false, userMenuOpen: false }" class="bg-white shadow">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="flex h-16 justify-between items-center">
-
-            <!-- Branding -->
+        <div class="flex h-16 justify-between">
+          <div class="flex">
+            <!-- Logo -->
             <div class="flex flex-shrink-0 items-center">
                 <a href="{{ route('home') }}" class="font-bold text-2xl">Barta</a>
             </div>
+          </div>
+<!-- Search input -->
+<form action="{{ route('search', ['id' => auth()->user()->id]) }}" method="GET" class="flex items-center">
+    <input
+        type="text"
+        name="search"
+        placeholder="Search..."
+        class="border-2 border-gray-300 bg-white h-10 px-5 pr-10 rounded-full text-sm focus:outline-none"
+    />
+</form>
+
+              <div class="hidden sm:ml-6 sm:flex gap-2 sm:items-center">
+                <!-- This Button Should Be Hidden on Mobile Devices -->
+                    <a href="{{ route('posts.create') }}"
+                      type="button"
+                      class="text-gray-900 hover:text-white border-2 border-gray-800 hover:bg-gray-900 focus:ring-2 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center hidden md:block">
+                      Create Post
+                    </a>
+
 
             <!-- Desktop Menu -->
             <div class="hidden sm:flex gap-2 sm:items-center">

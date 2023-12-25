@@ -12,21 +12,21 @@
          <div class="flex-shrink-0">
              <img
                  class="h-10 w-10 rounded-full object-cover"
-                 src="{{ asset('uploads/avatar/' . $post->user->user_image) }}"
+                 src="{{ asset('uploads/avatar/' . auth()->user()->user_image) }}"
                  alt="Post's user avatar"
              />
          </div>
          <!--/User Avatar -->
          <!-- Content -->
          <div class="text-gray-700 font-normal w-full">
-            <img src="{{ asset('uploads/posts/' . $post->post_image) }}" alt="" class="w-full">
+            <img src="#" alt="" class="w-full">
 
             <textarea
             class="block w-full p-2 pt-2 text-gray-900 rounded-lg border-none outline-none focus:ring-0 focus:ring-offset-0"
             name="post_content"
             rows="2"
             placeholder="Edit your post..."
-        > {{ $post->post_content }}</textarea>
+        > hello</textarea>
 
          </div>
      </div>
@@ -42,7 +42,7 @@
                  type="submit"
                  class="-m-2 flex gap-2 text-xs items-center rounded-full px-4 py-2 font-semibold bg-gray-800 hover:bg-black text-white"
              >
-                 Update
+                 Post
              </button>
              <!-- /Update Button -->
          </div>
