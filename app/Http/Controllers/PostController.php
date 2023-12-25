@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 class PostController extends Controller
 {
     public function index()
@@ -65,26 +66,20 @@ class PostController extends Controller
     public function uploadImage($request, $post_id)
     {
         // Check if an image is uploaded
-        if ($request->hasFile('post_image')) {
+        if ($request->file('post_image')) {
             $post = Post::find($post_id);
 
-            // Check if the post already has a previous image
-            if ($post->post_image !== null) {
-                // Delete the old photo using Laravel's file storage
-                Storage::delete('public/uploads/posts/' . $post->post_image);
-            }
+            $manager = new ImageManager(new Driver());
+            $new_photo_name = hexdec(uniqid()) . '.' . $request->post_image->extension();
+            $img = $manager->read($request->file('post_image'));
+            $img =$img->resize(350, 250);
 
-            $photo_location = 'public/uploads/posts/';
-            $uploaded_photo = $request->file('post_image');
-            $new_photo_name = $post_id . '.' . $uploaded_photo->getClientOriginalExtension();
-            $new_photo_location = $photo_location . $new_photo_name;
+            $img->toJpeg(80)->save(public_path('uploads/posts/' . $new_photo_name));
+            // $save_path = 'upload/avatar/' . $new_photo_name;
 
-            // Save image using Laravel's file storage
-            Storage::putFileAs('public/uploads/posts/', $uploaded_photo, $new_photo_name);
+            $post->post_image = $new_photo_name;
+            $post->save();
 
-            $post->update([
-                'post_image' => $new_photo_name,
-            ]);
         }
     }
 

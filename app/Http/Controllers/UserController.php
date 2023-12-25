@@ -10,6 +10,8 @@ use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Requests\ProfileUpdateRequest;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class UserController extends Controller
 {
@@ -63,27 +65,22 @@ class UserController extends Controller
     public function uploadImage($request, $user_id)
     {
         // Check if an image is uploaded
-        if ($request->hasFile('user_image')) {
+        if ($request->file('user_image')) {
             $user = User::find($user_id);
 
-            // Check if the user already has a previous image
-            if ($user->user_image !== null) {
-                // Delete the old photo using Laravel's file storage
-                Storage::delete('public/uploads/avatar/' . $user->user_image);
-            }
+            $manager = new ImageManager(new Driver());
+            $new_photo_name = hexdec(uniqid()) . '.' . $request->user_image->extension();
+            $img = $manager->read($request->file('user_image'));
+            $img =$img->resize(250, 250);
 
-            $photo_location = 'public/uploads/avatar/';
-            $uploaded_photo = $request->file('user_image');
-            $new_photo_name = $user_id . '.' . $uploaded_photo->getClientOriginalExtension();
-            $new_photo_location = $photo_location . $new_photo_name;
+            $img->toJpeg(80)->save(public_path('uploads/avatar/' . $new_photo_name));
+            // $save_path = 'upload/avatar/' . $new_photo_name;
 
-            // Save image using Laravel's file storage
-            Storage::putFileAs('public/uploads/avatar/', $uploaded_photo, $new_photo_name);
+            $user->user_image = $new_photo_name;
+            $user->save();
 
-            $user->update([
-                'user_image' => $new_photo_name,
-            ]);
         }
+
     }
 
     /**
