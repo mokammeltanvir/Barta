@@ -10,6 +10,15 @@
             <header>
                 <div class="flex items-center justify-between">
                     <div class="flex items-center space-x-3">
+                         <!-- User Avatar -->
+         <div class="flex-shrink-0">
+            <img
+                class="h-10 w-10 rounded-full object-cover"
+                src="{{ asset('uploads/avatar/' . $post->user->user_image) }}"
+                alt="Post's user avatar"
+            />
+        </div>
+        <!--/User Avatar -->
                         <!-- User Info -->
                         <div class="text-gray-900 flex flex-col min-w-0 flex-1">
                             <a href="{{ route('user.show', $post->user) }}" class="hover:underline font-semibold line-clamp-1">
@@ -56,6 +65,10 @@
             <!-- Content -->
 
             <div class="py-4 text-gray-700 font-normal">
+                <img
+                      src="{{ asset('uploads/posts/' . $post->post_image) }}"
+                      class="min-h-auto w-full rounded-lg object-cover max-h-64 md:max-h-72"
+                      alt="" />
                 <p>{{ $post->post_content }}</p>
             </div>
 

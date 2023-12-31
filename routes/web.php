@@ -34,6 +34,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/users/{user}', [UserController::class, 'show'])->name('user.show');
     Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('user.edit');
     Route::put('/users/{user}', [UserController::class, 'update'])->name('user.update');
+    Route::get('/search/{id}', [UserController::class, 'search'])->name('search');
 
 
     // Post Route

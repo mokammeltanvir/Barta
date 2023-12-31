@@ -28,6 +28,7 @@ class ProfileUpdateRequest extends FormRequest
             ],
             'bio' => ['nullable', 'string'],
             'password' => ['nullable', 'sometimes', 'string', 'min:8'],
+            'user_image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
         ];
     }
 }
